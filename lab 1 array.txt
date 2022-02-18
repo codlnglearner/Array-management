@@ -1,0 +1,127 @@
+#include <stdio.h>
+
+int Insert(int value, int A[], int n)
+{
+    // insert value into A[], return new length n
+    for(int i = n-1; i >= 0; i--){
+        A[i+1] = A[i];
+    }
+    A[0] = value;
+    n = n+1;
+    return n;
+}
+
+int Delete(int value, int A[], int n)
+{
+    // delete value from A[], return new length n
+    int B[n-1];
+    for (int i=0, j=0; i < n; ++i)
+  {
+    if(A[i]!=value){ 
+        B[j++] = A[i];
+    }
+  }
+  n=n-1;
+  for (int i=0;i<n;i++){
+      A[i]=B[i];
+  }
+  return n;
+}
+
+int Exist(int value, int A[], int n){
+    // check whether value exists in array A[]
+    int found=0;
+    for(int i=0;i<n;i++){
+        if(A[i]==value){
+            found = 1;
+            break;
+        }
+    }
+    if(found==1){
+        return 1;
+    }
+    return 0;
+}
+
+int Update_one(int value, int new_value, int A[], int n)
+{
+    // change old_value to new_value, return new length n
+    for(int i=0;i<n;i++){
+        if(A[i]!=value){
+            continue;
+        }else{
+            A[i]= new_value;
+            break;
+        }
+    }
+    return n;
+}
+
+int Update_all(int old_value_min, int old_value_max, int new_value, int A[], int n)
+{
+    // change old_value in range (inclusive) from old_value_min to old_value_max to new_value, return new length n
+    for(int i=0;i<n;i++){
+        if((A[i]>=old_value_min) && (A[i]<=old_value_max)){
+            A[i]=new_value;
+        }else{
+            continue;
+        }
+    }
+    return n;
+}
+
+void Print(int A[], int n)
+{
+    // print values in A[] in one line, every two integers are separated by a space
+    int a;
+    for (int i = 0; i < n; i++){
+      for (int j = i + 1; j < n; j++){
+         if (A[i] < A[j]){
+            a = A[i];
+            A[i] = A[j];
+            A[j] = a;
+         }
+      }
+   }
+   for(int i=0;i<n;i++){
+        printf("%d ",A[i]);
+    }
+}
+
+int main()
+{
+    int A[100];
+    int n; // the number of integers in A
+    int value, value_min, value_max, new_value;
+
+    // printf("Array initialization: \n");
+    // printf("How many integers in array initially: ");
+    scanf("%d", &n);
+    // printf("What are the integers: ");
+    int temp = 0;
+    for(int i=0; i<n; i++){
+        scanf("%d", &value);
+        temp = Insert(value, A, temp);
+    }
+
+    // printf("Input a value for insertion: ");
+	scanf("%d", &value);
+	n = Insert(value, A, n);
+
+	// printf("Input a value for deletion: ");
+	scanf("%d", &value);
+	n = Delete(value, A, n);
+
+	// printf("Input the old and new values for update(one): ");
+	scanf("%d%d", &value, &new_value);
+	n = Update_one(value, new_value, A, n);
+
+    // printf("Input the min old value, max olf value and new value for update(all): ");
+	scanf("%d%d%d", &value_min, &value_max, &new_value);
+	n = Update_all(value_min, value_max, new_value, A, n);
+
+    // printf("Current array: \n");
+	Print(A, n);
+
+	return 0;
+}
